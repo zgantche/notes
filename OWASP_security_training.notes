@@ -1,0 +1,577 @@
+< NOTES >
+
+- OSVDB -> outdated, this is no longer available (since 2012!)
+- STRIDE model's acronym items were not recorded
+
+
+< unknown module >
+
+- Privilege Escalation
+- Insecure direct object reference
+	. URL parameters
+- Function level access control
+- Page level authorization
+
+< Factors of Authentication >
+	1. Knowledge
+	2. Possession
+	3. Physical
+
+< XSS -- Cross-Site Scripting >
+- browsers executing malicious code
+
+# Types #
+	1. Reflected: run via `forms` & `URL params` short lived
+	2. Stored: run via reusable elements like comments; the injected code will be saved to db (ex. as a 'comment'), and will be displayed/executed by browsers of all users who view this comment. This can spread to form a worm
+	3. DOM_based: run via `DOM properties`
+		. ex `document.URL`, `document.location`, `document.URLUnencoded`, `window.location`, `location`, etc.
+
+# Defenses #
+- canonicalization: convert all input to canonical form (ex. UTF-8) before validation
+- escaping: escape/encode untrusted data
+	. escape for context, what's going to interpret the data?
+		-> ex JavaScript, HTML attr, HTML tag, URL, etc.
+- HTTP only cookie setting
+- HTTP headers and content security policy (CSP)
+	. CSP example
+		1. content : `default-src 'self';`
+		2. images : `img-src *`
+		3. media content: `media-src example.com`
+		4. executable scripts: `script-src example.com`
+- safe vs unsafe coding
+	. unsafe: element.innterHTML, document.write(), etc.
+	. safe: document.createElement(), element.setAttributes(), element.appendChild()
+
+< Injection attacks >
+- code injection
+- OS injection
+- LDAP injection
+- XPATH
+
+# Defenses #
+- SQL bind parameters, define what word 'type' you're expecting
+- escape/validate/sanitize parameters before injecting them into a query
+	-> npm `validator.js`
+- files: size limit, scanning uploads, check validity of file metadata, validate file types via their `unique signatures` or `magic bytes`
+- Penetration Testing:
+	. SQL: `sqlmap` tool
+	. MongoDB: `NoSQLMap` tool
+
+
+< Insecure Deserialization >
+# Defenses #
+- sign objects
+- create whitelist of objects
+
+
+< Security Misconfiguration >
+
+# Types #
+1. Hardening
+	. process of locking down a system to the most restrictive state possible -- minimum security baseline (MSB)
+	. OS restrictions, disabling unnecessary services
+2. Environment Config
+	. is the environment configured to enforce least privilege
+3. Bootstrapping
+	. is the startup process secure, possible to tamper with startup parameters
+
+- default config for pw, account names, API tokens, and salts
+
+# Defenses #
+- Configuration DB
+- central patch management server
+
+
+< Sensitive Data Exposure >
+
+- storing sensitive data
+	. encrypt with one-way hashes, with salt (Argon2, scrypt, bcrypt, PBKDF2)
+- policies around key creation, rotation, destruction, and access
+- technical details
+	. TLS
+		-> disable ciphers under 128-bit encryption
+		-> use Perfect Forward Secrecy (PFS) ciphers, cipher prioritizaiton, and secure parameters
+	. remove v1, v2, v3 versions of SSL
+- hashing: one-way transformation of data, used for integrity and security
+	. hackers can look up hashes for common-used pw's, so it's recommended to use with salt
+- encryption: two-way transformation of data, used for security
+
+
+< Node.js Security config >
+- never run app with root privileges
+	. such privileges are required for access to ports below 1024, but you can use iptables to redirect instead
+- disable the `x-powered-by` function, in order to hide the name of the framework in the response header
+
+# Harden HTTP response headers #
+- use the `helmet` framework
+	. frameguard: prevents iframes, protects clickjacking
+		-> x-frame-options
+	. noCache: prevents browser from caching page
+	. contentSecurityPolicy: allows for whitelist of domains that load your resources
+		-> http strict transport security
+	. hsts: forces HTTPS communication
+	. xssFilter: addes basic XSS protections
+		-> x-xss-protection
+	. noSniff: forces browser to only use `Content-Type` set in response header instead of sniffing it
+		-> content security policy
+		-> x-content-type-options
+
+
+
+< Defending Node.js - Using Components >
+
+- when selecting npm packages, check for: unit testing, static code analysis (JShint, JSLint), release frequency
+- ! package scanning and monitoring !
+	. Node Security Platform -> nodesecurity.io
+	. Snyk -> snyk.io
+
+< Defending Node.js - Injection >
+
+- SSJS injection
+
+< Defending Node.js - XSS >
+
+- refer to XSS up top
+- bodyPerser.urlEncoded to only parse UTF-8 encoded bodies
+- req.sanitize() satitizes by escaping
+- Content Security Policy (CSP) -- creates a whitelist of trusted domains for frontend to use
+
+< Defending Node.js - Cross-Site Request Forgery >
+
+- exploits the server's trust of a client's session
+- use csurf middleware to create anti-CSRF tokens
+
+< Defending Node.js - Broken Authentication >
+
+- HTTP Strict Transport Security (HSTS)
+	. requires browsers to request the HTTPS version of pages
+
+
+< Defending Mobile - Protecting Data at rest >
+
+- Password Based Key Derivation (PBKDF2)
+	. the industry accepted way of encrypting data on mobile without storing the key
+
+< Defending Mobile - Business Risks on Mobile Applications >
+
+1. Rest: stored on device
+	. unique to user
+	. sensitive data
+2. Transit: sent across network
+	. intercepted and tampered with
+	. API's should be hardened
+3. Runtime: memory-related, debugging tools, logs
+	. wipe memory
+	. can cause app to behave in unexpected ways
+
+
+
+< Secure Software Concepts - Core Concepts >
+
+- Software Security is difficult, we're defenders of an unfair fight. There are no rules of engagement, attackers can attack at any time. Since software is spread out over hardware, network, and servers, a single lapse of judgement can compromise data
+- This is why security must be planned from the start, holistically
+
+
+# Project Management Trinity #
+
+1. Scope: increasing scope means an increase in the schedule or cost
+2. Cost: decrease in cost means decrease in schedule or scope
+3. Schedule: decrease in schedule means decrease in scope or increase in cost
+
+- the cost to fix security goes up the further up the development stages it goes, up to 30X in Production
+
+- balance between `business` and `security`
+
+
+# Core Security Pillars #
+
+a. Confidentiality: protecting confidential data, disclosing data only to the correct parties
+b. Integrity: building resilient software
+	. affects multiple areas: transmission, processing, and storage of data
+	. reliability of data
+c. Availability: minimize downtime
+
+
+< Secure Software Concepts - Methodologies of Software Dev >
+
+# Development Methodologies #
+1. Waterfall: predefined phases, typically Requirements, Design, Development, Testing, Deployment
+	. security: risks must be caught early because phases are not repeated
+2. Iterative: breaks up development into prototypes, at each cycle everything from business dev to implementation is done
+	. security: if cycles are too small, some security needs may be overlooked
+3. Agile: each phase goes through a time boxed, full SDLC (Systems Development Lifecycle) development process with minimal planning
+	. relies on unit tests as QL mechanism
+	. rooted in Iterative ideology
+	. security: ensure security is incorporated within unit tests
+4. Spiral: contains multiple phases in spiral, key characteristic being that each cycle includes a 'Risk Assessment'
+	. security: 'Risk Assessment' provides each phase with space for identifying security issues
+
+# Security Methodologies #
+(can be incorporated into any development methedology)
+1. Socratic: stimulate conversation and rationalize needs, typically by rephrasing the question back
+	. ex. "Why must I ensure data is protected against disclosure?" "Why must you ensure data is not protected against disclosure?"
+2a. STRIDE: for design phase
+	. Spoofing -> impersonation
+	. Tampering -> unauthorized modification
+	. Repudiation -> cannot prove the action
+	. Information Disclosure -> disclosure of confidential data
+	. Denial of Service -> service downtime affecting availability
+	. Elevation of Privilege -> unauthorized increase in rights
+2b. DREAD: (DREAD) 
+	. Discoverability: ease of finding vulnerability
+	. Reproducibility: ease of recreating
+	. Exploitability: skill it takes to exploit
+	. Affected_Users: magnitude
+	. Damage_Potential: impact to system
+3. FHM: (Flaw Hypothesis Method) uses penetration testing
+	. Phase 1 - Hypothesize flaws
+	. Phase 2 - Confirm flaws through pen-test
+	. Phase 3 - Generalize confirmed flaws to summarize issues
+	. Phase 4 - Address issues
+4. Six_Sigma: assumes there are under 3.4 Defects Per Million Opportunities (DPMO)
+	. dificult to measure in software.. 'opportunity' can be illusive
+5. CMMI: (Capability Maturity Model Integration) a rating scale to measure maturity of software dev processes compared to other organizations
+	. Five ratings:
+		1) Processes are adhoc, reactive, unpredictable
+		2) Repeatable project management schedule and costs
+		3) Established processes, proactive and continuously improved
+		4) Processes's improvement is measured by metrics
+		5) Continuous process improvement and optimization
+6. OSSTMM: (Open Source Security Testing Methodology Manual) aims to provide scientific methodology for defining security via testing and results
+	. 5 test channels:
+		1) data controls
+		2) security awareness
+		3) social engineering
+		4) wireless and mobile devices
+		5) physical access
+		6) security processes
+		7) building security
+	. also helps guide auditors to test and measure security
+7. OCTAVE: (Operationally Critical Threat, Asset, and Vulnerability Evaluation) set of tools, techniques and methodology for risk based 
+	. performed in three stages: 
+		1) Build asset based threat profiles
+		2) Identify vulnerabilities
+		3) Develop security strategy and plans
+
+
+
+< Secure Software Concepts - Principles of Security Design >
+
+
+- Least_Privilege: give users only the minimum amount of access rights
+- Separation_of_Duties: no one person or process can complete an operation in its entirety
+- Defense_in_Depth: no single point of compromise via multiple layers of risk mitigation tools
+- Fail_Secure: upon failure, confidentiality, integrity, and availability of software is maintained with rapid recovery
+	. in event of failure, software defaults to secure state
+- Economy_of_Mechanism: likelihood of vulnerabilities increases with complexity of software
+- Complete_Mediation: always check access rights upon object request
+- Open_Design: security of software/system shouldn't be a secret
+- Least_Common_Mechanism: minimize commonly shared mechanisms
+- Psychological_Acceptability: security within software should seem transparent and easy to use, otherwise users will attempt a way around it
+- Leaveraging_Existing_Components: reuse components, to reduce surface area for potential attack
+- Weakest_Link: software is as strong as its weakest link
+- Single_Point_of_Failure: no single point in the software should be able to compromize the entire system, if it does fail
+
+< Secure Software Concepts - Governance, risk and compliance >
+
+- Health Insurance Portability and Accountability Act
+- Data Protection Act
+	. Personal Information Protection and Electronic Documents Act
+- Computer Misuse Act
+
+- residual_risk: remaining risk
+
+
+< Secure Software Concepts - Privacy >
+
+- Data_Anonymization: when data needs to be exported for analyzing, we can anonymalize it
+	1. Generalize: ex. names with first name only, date of birth to year only, and address to City/Province only
+	2. Replacement: ex. replacing names with numbers
+	3. Suppression: deleting parts of the data altogether
+	4. Pertubation: Scrambling parts of the data
+
+
+< Secure Software Concepts - Programming Languages >
+
+
+Compiled:
+	. C, C++
+Interpreted:
+	. Perl, Python, Ruby
+Hybrid:
+	. Java, .NET
+
+Managed
+Unmanaged
+
+- CAS: Code Access Security, unique to .NET
+- transparency: .NET categorizes code into three buckets
+	1. transparent: untrusted
+	2. safe: acts as bridge
+	3. critical: trusted
+
+
+< Secure Software Concepts - Common Software Vulnerabilities >
+
+- NVDB -> `nvd.nist.gov`
+- US-CERT -> 
+- OSVDB -> outdated jeeez
+- OSWASP Top 10 -> `owasp.org`
+- CWE Top 25 -> `cwe.mitre.org`
+
+
+# Locality of Interest #
+- temporal: cache
+- spatial: areas arount accessed memory might be accessed soon
+- branch: pattern of memory always accessed, but not close together
+- equidistant: memory locations in use follow a pridictable, linear pattern
+
+
+
+< Secure Software Concepts - Secure Software Processes >
+
+
+- static_analysis: needs manual work to varify
+- dynamic_analysis: code must be working, program must be aware of all areas of code
+- threat_model: identify critical areas of an application, this aids in narrowing down lines of code to check during a PR
+	. STRIDE model (Not defined jeeez):
+	s. Spoofing: authenticity
+	t. Tampering: integrity
+	r. Repudiation: non-repudiability
+	i. Information_disclosure: confidentiality: 
+	d. Denial_of_service: availability
+	e. Elevation_of_privilege: authorization
+
+
+< Secure Software Concepts - Components to Testing >
+
+- test_strategy: project standard
+	. scope is entire project
+- test_plan: what and who
+	. scope is smaller, more detailed
+- test_cases: 
+- test_scripts: 
+
+
+< Secure Software Concepts - Components to Testing >
+
+# Types of Testing #
+Reliability:
+- Unit: small, testable units
+- Integration: test multiple units of code function as intended
+- Regression: test new changes against existing functionality
+Recoverability:
+- Stress: find breaking point
+	. exeed maximum
+	. deprive resources
+- Load: test for maximum operating capacity
+Environment:
+- Simulation: overcome discreptancies between prod and dev
+- Interoperability: test connecting components together function as expected
+
+
+< Secure Software Concepts - Resiliency and Reporting >
+
+- used to find the attack surface
+
+
+# Blackbox #
+- no prior knowledge to the system
+	. limited code coverage
+	. analyzes symptoms not causes
+	. useful for identifying deployment issues
+	. dependent on skill of tester
+	. simulated and prod
+
+Types:
+1. Scanning: identifies attack surface of a network or application, goal is to map surface and locate vulnerabilities
+	a) network: identify (and finger print) all open ports or services
+	b) application: crawl all site pages, then uses db (of attack techniques) to find vulnerabilities 
+2. Penetration: 
+	1) Reconnaissance: map surface; versioning, banner grabbing, port scanning
+	2) Attestation: exploiting vulnerabilities, OWASP10/CWE25
+	3) Removal: log files, test accounts, enabling disabled services
+	4) Reporting: results, often ordered by risk rating
+3. Fuzzing: tests *how* inputs in app respond to unexpected input (ex. long value)
+	. smart: generated data, conforms to existing data format
+	. dumb: mutated data, disregards expected format
+
+# Whitebox #
+- full access to system codebase and architecture
+	. full code coverage
+	. false positives/negatives reduced
+	. useful for flaws in logic
+	. dev and testing
+
+# Graybox #
+- combines both whitebox and blackbox
+	. ex. providing user accounts to blackbox tester
+
+
+
+
+< Defending Cloud-Based Applications - Secure SDLC>
+
+
+Authentication:
+- requires the following
+	. secure mechanism for authenticating identity
+	. binding user to identity
+	. identification of communication origins
+	. management of out-of-band authentication means
+	. reaffirmation of identities
+
+Authorization:
+- requires
+	. management of control subsystems
+	. access control mechanisms
+	. user privileges
+
+Auditing:
+- logging and tracking user activities
+- requires
+	. protect against unsanctioned info-sharing apps (shadow IT)
+	. identify type of control to apply on each step of data life cycle
+	. logging/tracking
+	. timely reporting of incidents
+	. security for audit logs
+
+
+- Least_Privilege: give users only the minimum amount of access rights
+- Separation_of_Duties: no one person or process can complete an operation in its entirety
+	. requiring more than one entity, process, or conditions to do sensitive things
+- Fail_Secure: upon failure, confidentiality, integrity, and availability of software is maintained with rapid recovery
+	. in event of failure, software defaults to state in which security and data are not compromised
+- Economy_of_Mechanism: likelihood of vulnerabilities increases with complexity of software
+	. security mechanism should be as simple as possible
+- Complete_Mediation: always check access rights upon object request
+- Open_Design: security of software/system shouldn't be a secret
+- Least_Common_Mechanism: minimize commonly shared mechanisms
+	. users should share least number of security mechanisms
+- Leaveraging_Existing_Components: reuse components, to reduce surface area for potential attack
+- Weakest_Link: software is as strong as its weakest link
+
+- Defense_in_Depth: no single point of compromise via multiple layers of risk mitigation tools
+	. when layer of protection is breached, the subsequent layer(s)should provide necessary protection
+	. intrusion detection, key management infra KMI, public key infra PKI
+- Psychological_Acceptability: security within software should seem transparent and easy to use, otherwise users will attempt a way around it
+	. security mechanisms should be intunitive, otherwise admins may unintentionally set them up incorrectly
+- Single_Point_of_Failure: no single point in the software should be able to compromize the entire system, if it does fail
+
+
+< Defending Cloud-Based Applications - Cloud Computing Fundamentals >
+
+
+# Cloud Delivery Models #
+1. SaaSL: (Software) customer accesses provided app
+	. ex. Wikipedia
+2. Paas: (Platform) customer accesses hosted platform to build and deploy their own apps
+	. ex. heroku, windows azure
+3. IaaS: (Infrastructure) customer accesses hosted platform with more control over infrastructure
+	. ex. AWS
+
+- cloud deployment models missing jeeez
+
+- security concerns
+	. lack of control over physical security
+	. incompatibility between vendors when migrating services
+	. shared storage increases risk of data leakage/unauthorized access
+
+
+< Defending Cloud-Based Applications - Security Objectives >
+
+
+# Core Security Pillars #
+
+a. Confidentiality: protecting confidential data, disclosing data only to the correct parties
+	. 
+b. Integrity: building resilient software
+	. affects multiple areas: transmission, processing, and storage of data
+	. reliability of data
+c. Availability: minimize downtime
+
+
+
+# Shared Technology Infrastructure #
+0. server
+1. hypervisor
+2. VMs
+3. applications
+
+
+
+# Attacks Associated with Cloud-Based #
+
+Availability Based Attacks:
+- Denial_of_service: overwhelm server with low-bandwidth requests
+- Account_lockout: lock users out of logging in
+- Buffer_overflow: inject malicious content via an input, which will cause buffer overflow
+
+Data Security:
+- XSS: scripts in vulnerable input fields
+- Access_control_weakness: user is able to access functionality/resources beyond their role
+- Privilege_escalation: 
+	a) vertical: attacker runs kernel-level operations granting himself privileges
+	b) horizontal: attacker assumes identity of another user
+
+Network Security:
+- Network_penetration: scan and locate vulnerable ports to exploit
+- Session_hijacking: network sniffing, can allow an attacker to hijack a valid session
+
+Identify Management:
+- Authentication_weakness: targets the authorization mechanism
+	. locating the correct target is a feat in the cloud
+- Insecure_trust: failure in defining trust requirements
+
+
+< Defending Cloud-Based Applications - Security Concerns and Challenges >
+
+- SAS 70 - Type II Audit
+	. evaluates vendor's internal controls to ensure best practices are applied to protect data
+- Google
+	. SAS 70
+	. FISMA Certification
+	. two-factor, HTTPS-only, data storage redundancy, regular code audits
+
+- Privacy Compliance
+	. notice on how PII is collected, used, and disclosed
+	. choice to opt in or out regarding disclosure of PII to third parties
+	. access to review and correct info
+	. protection of PII from unauthorized disclosure
+	. enforcement of privacy policies and obligations
+
+- Federating_identities: process of linking identities and attributes, *IdP identity provider*
+
+- Enterprise_identity_provider
+	. complex
+
+- Identity_management_as_a_service: (IDaaS)
+	. ex. Okta, OneLogin
+
+- Software_based_protections: uses encryption wrappers which dynamically encrypt/decrypt code at runtime 
+
+- VM_architecture: 
+	. key management
+		1) Local Key Management
+			-> control keys located at user's site
+		2) Cloud Key Management
+			-> encryption and key management executed on cloud
+			-> user multiple keys for different VMs
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
