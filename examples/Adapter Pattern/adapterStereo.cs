@@ -16,7 +16,7 @@ namespace Adapter
         string PlayPhoneSpeakers();
     }
  
-    // The CarStereo has nice speakers
+    // The CarStereo nice speakers, but requires an input station/channel to play
     class CarStereo : ICarStereo
     {
         public string PlayStereoSpeakers(string musicChannel)
@@ -37,9 +37,9 @@ namespace Adapter
         {
             this.Music = music;
         }
-
+ 
         public string Music { get; set; }
-
+ 
         public string PlayPhoneSpeakers()
         {
             return "Phone speakers go: " + Music;
@@ -64,31 +64,32 @@ namespace Adapter
  
     class Program
     {
-        // Snoop Dog, sole goal is to listen to some jamz in his car
+        // Snoop Dog, only knows how to use car stereos
         private static void snoopDog(ICarStereo stereo, string jamz = null){
             Console.WriteLine(stereo.PlayStereoSpeakers(jamz));
         }
-
+ 
         static void Main(string[] args)
         {
             Console.WriteLine("--=[BEGIN]=--\n");
             
             var carStereo = new CarStereo();
             var phone = new Phone("♫♫ mp3 audio ♫♫");
+            var androidPhone = new Phone("other mp3");
             // Console.WriteLine(phone.PlayPhoneSpeakers());
-
+ 
             Console.WriteLine("snoopDog: I can play music just fine with CarStereo objects.");
             snoopDog(carStereo);
             snoopDog(carStereo, "♫ 88.1 FM Radio ♫");
-
+ 
             Console.WriteLine("\nsnoopDog: The Phone object is neat, it's got nice jamz.");
-            Console.WriteLine("But it has a weird interface. I can't play that on the car stereo.");
+            Console.WriteLine("BUT that ain't no CarStereo. Sorry cuz.");
             // snoopDog(phone);
-
-            Console.WriteLine("\nsnoopDog: However, let's see if it works if I connect the Phone to this Adapter:");
+ 
+            Console.WriteLine("\nsnoopDog: However, with this Adapter, it sure *looks* like a CarStereo.");
             var adapter = new Adapter(phone);
             snoopDog(adapter);
-
+ 
             Console.WriteLine("\n--==[END]==--");
         }
     }
