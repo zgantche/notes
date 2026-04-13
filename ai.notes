@@ -1,4 +1,12 @@
 
+-----------------------------------------------------------
+    TIPS
+-----------------------------------------------------------
+
+- think of AI as a very smart intern, thought partner; but I need to varify and guide it
+	. ! the response reflects the quality of the prompt !
+- generative models are heavy (?); it's possibly cheaper to run multiple predictive models, linked together
+
 
 -----------------------------------------------------------
     THEORY
@@ -6,34 +14,93 @@
 
 - AI neural networks are *inspired by* our brain's neural network
 	. neurons
-		-> have *bias*, adjustment shifting when neuron is activated
+		-> have *bias*; adjustment shifting when neuron is activated
 	. connections (connecting one neuron to another)
-		-> have *weights*, representing the strength of the connection
+		-> have *weights*; represent the strength of the connection
 
 - the *weights* and *biases* start off with random numbers and are fed MASS DATA, which results in that data being "compressed"/"encoded" into the *weights* and *bias*es
 
 - *weights* and *biases* are "parameters"
-- during training, we are setting the "parameters"
+	. during training, we are setting the "parameters"
+	. penalizing repetition, and adding a certain amount of randomness
 
-- modality: the different types of data an AI can understand and process, akin to human senses (?)
-	. ex. text, image, audio, video, sensor data
-- tweaks to penalize for repetition, and certain amount of randomness
+- Multimodal_Models: models capable of processing and integrating information from multiple modalities
 
-
-- RAG: Retrieval Augmented Generation
+- RAG: Retrieval Augmented Generation ! very powerful !
 	. providing additional files/data as context to augment a model's response to your prompt
+	. ex. embedding, vector databases
 
+- tokens: "common sequences of characters", actually basic, short words
+	. ex. hey, guy, this -> 1 token; extraordinary -> 2 tokens (extra, ordinary)
+	. https://platform.openai.com/tokenizer
 
 AI_Models:
 	. stateless
 	. read-only
 	. probability distribution
 
+Orchestrator:
+	. or "Assistant"
+	. safety checks
+	. extra instructions
+		-> "system prompt" + "full chat history" + ... + "USER PROMPT"
+		-> RAG
+
+
+You are an AI academic expert. What are the various types of AI models? For example, generative models, predictive models, etc.
 
 
 -----------------------------------------------------------
     TERMINOLOGY
 -----------------------------------------------------------
 
+Prompt Engineering:
+	. techniques for creating quality prompts
+
 - LLM: Large Language Model
 - RLM: Large Reasoning Model
+	. type of *LLM*
+
+- RAG: (technique) Retrieval Augmented Generation
+	. traceable answers from structured knowledge
+	. stores information in vector database (?)
+
+- MCP: (protocol) Model Context Protocol
+	. standardizes "tool calling" between clients: MCP Client -> MCP Server -> Tool
+
+- Agentic_AI: act autonomously to complete jobs, not just one response but can go through a number of stages
+
+
+-----------------------------------------------------------
+    CONCEPTS
+-----------------------------------------------------------
+
+- Alignment: steer AI systems toward intended goals, preferences, or ethical principles
+
+- Modality: the different types of data an AI can understand and process, akin to human senses (?)
+	. ex. text, image, audio, video, sensor data
+
+- Observability: 
+
+- Mixture_of_Experts: divides a model into separate sub-networks (or “experts”), each specializing in a subset of the input data, to jointly perform a task
+	. represents a form of ensemble learning
+
+
+-----------------------------------------------------------
+    Types of AI Models
+-----------------------------------------------------------
+
+Generative Models: focus on learning underlying distribution of data to create new content
+	-> "creators" (e.g., GANs, Variational Autoencoders, LLMs).
+
+Predictive Models: look for space between data points to classify them or predict a value, only care about labeling data
+	-> "Discriminative" (e.g., Logistic Regression, SVMs, Random Forests).
+
+Prescriptive Models: These go a step beyond prediction to recommend a specific course of action to reach a desired goal, often used in logistics and business strategy.
+
+Agentic Models (?)
+
+
+
+
+
