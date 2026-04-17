@@ -1,0 +1,155 @@
+
+
+-----------------------------------------------------------
+    Obsidian - Evaluate AI Responses Based on Overall Quality
+-----------------------------------------------------------
+Start: 4:20pm
+
+Dimensions:
+	- Completeness
+	- Instruction Following
+	- Factuality
+	- Conciseness & Relevance
+	- Style & Tone
+
+Response Type and Tone:
+	- Formatting: readable
+		. bold, emojiis, etc
+	- Conciseness: tight, warm answers
+		. announcing, dead-weight openers/repetition
+		. Unsolicited elaboration, follow up offers, unnecessary context padding
+	- Banned_Words_and_Patterns:
+		. overused AI words: "delve, scaffolding, ascertain, underscore, paramount, tapestry, foster"
+		. the "Serves As" dodge -> should just be "is"
+		. three-beat cadences, mid-sentence rhetorical questions
+	- Clarity:
+		. keep verbs verbs
+	- Warmth_and_Register:
+		. response should be warm, naturally through tone
+	- Uncertainty:
+		. burying doubt near the end
+		. restaiting uncertainty
+		. overly stiff phrasing
+	- Handling_Ambiguity:
+		. too many clarifying questions, keep responses on-track
+	- Editorializing:
+		. would a smart friend say this, or does it sound like a legal disclamer?
+	- Character_Consistency:
+		. any change in tone of responses which would break immersion
+
+
+FastAPI 0.104, Python 3.12, PostgreSQL 16, ! Pydantic v2 ! (50 concurrent database connections)
+-> # SQLAlchemy 2.0 # OR # Django ORM #
+	1. SQLAlchemy async session select() query's ease of use
+	2. async performance
+	3. migration tools
+	4. ORM integration with ! Pydantic v2 ! models
+
+
+# Model A
+- unnecessary context padding "You’re correct that your team lacks async SQLAlchemy 2.0 production experience"
+- unformatted wall of text
+- "SQLAlchemy 2.0 is the more natural and reliably performant choice—especially given your team’s lack of production experience with async SQLAlchemy" doesn't follow, logically
+- feels like a sales pitch "If your team values predictable, scriptable migrations"
+Grade: C+
+
+
+# Model B
+- Too much bold
+- Formatting is all over the place; some parts are overformatted, distracting from topic at hand, others, are walls of text
+- dead-weight repetition "~50 concurrent DB connections"
+- unnecessary padding: "critical when you expect many concurrent requests and want predictable behavior under saturation"
+	. uses elaboration within parenthesis too often, four times within two sentences
+- off topic "A practical recommendation: treat migrations as a first class..."
+- sales pitch "For many teams that’s a huge productivity multiplier..."
+- the opposite of a 'tight, warm answer' XD
+Grade: D
+
+
+# Model C
+- a little bit of padding and awkwardness in tone
+	-> "Below is a structured comparison with concrete reasoning"
+	-> "Your team’s lack of production experience with SQLAlchemy’s async session and 2.0-style queries is real"
+- but overall much more succinct
+- handled ambiguity decently; next step suggestions were not the best but reasonable
+Grade: A
+
+
+# Model D
+- overformatted, all pieces of responce are either headings, bullet points, or formatted summaries
+- ended the response with menu of options, which we were told to flag
+- overly concise; made one-line statements, without elaboration on any of its reasoning
+- Grade: B-
+
+
+
+< Factuality >
+- first-class async
+- true async i/o
+	-> "asyncio" is a Python library!
+	-> models made it seem like it was some kind of Python concept
+
+
+
+
+-----------------------------------------------------------
+   Mango - Talk to a Chatbot About Real World Coding Tasks
+-----------------------------------------------------------
+
+FAILURE DEFINITION:
+
+# ✅ Reproducible
+	Indicating that the issue is a persistent model capability gap, not an incidental / random failure.
+
+	If you regenerate the response, the model makes the same (or a similarly severe) fundamental error.
+
+
+# ✅ Related a breakdown in the model's problem solving approach.
+	Indicating that the model was challenged by the prompt.
+
+
+# ✅ In at least one of the Core Capabilities (below).
+	It is a coding capability we want to index on.
+
+
+
+
+-----------------------------------------------------------
+    Beryllium - search results
+-----------------------------------------------------------
+
+- self-containedness
+- atomic structure
+
+- explicit: word-for-word, from prompt requirements
+- implicit: likely assumed by most users
+- objective: can be measured, varified
+- subjective: involves interpretation
+
+- answer key
+
+- fully_grounded_prompts: "All factual information must come from search results"
+	. all atomic claims are grounded
+- partially_grounded_prompts: "Some information from search results, some from general knowledge (OR search results)"
+	. central atomic claims are grounded
+
+! Quick Test ! Can the model answer this WITHOUT the search results?
+	- YES: Specific facts, current events, personal data 	-> Fully Grounded
+	- NO:  General knowledge, concepts, explanations 		-> Partially Grounded
+
+
+- Instruction_Criteria: "What to say"
+- Citation_Criteria: "Where it comes from"
+	. #Objective Facts (One Right Answer)
+		-> A single CC that mirrors the IC
+	. #Subjective Facts (Multiple Valid Options)
+		-> Multiple CC, per Option (max 5)
+		-> require a "For example..." statement
+	. #Structural/Formatting Requirements
+		-> No CC needed
+
+	- External_Evidence: less than 1/4 of your CC should rely on External_Evidence
+
+! Quick Test ! "Could someone answer this part WITHOUT the search results?"
+	- NO: Citation: Required
+	- YES: Citation: Optional (for Partially Grounded) or N/A (for structural criteria)
