@@ -3,7 +3,7 @@
     TIPS
 -----------------------------------------------------------
 
-- think of AI as a very smart intern, thought partner; but I need to varify and guide it
+- think of AI as a very smart intern, thought partner; you need to varify and guide it
 	. ! the response reflects the quality of the prompt !
 - generative models are heavy (?); it's possibly cheaper to run multiple predictive models, linked together
 
@@ -26,21 +26,25 @@
 
 - Multimodal_Models: models capable of processing and integrating information from multiple modalities
 
-- RAG: Retrieval Augmented Generation ! very powerful !
-	. providing additional files/data as context to augment a model's response to your prompt
-	. ex. embedding, vector databases
-
 - tokens: "common sequences of characters", actually basic, short words
-	. ex. hey, guy, this -> 1 token; extraordinary -> 2 tokens (extra, ordinary)
+	. ex. hey/guy/this -> 1 token; extraordinary -> 2 tokens (extra, ordinary)
 	. https://platform.openai.com/tokenizer
 
-AI_Models:
+AI_Model:
+	. ex. LLM, 
 	. stateless
 	. read-only
 	. probability distribution
+	. *tokens* -> LLM -> likely *token*
+
+Agentic System:
+	. anything involving automation and LLM(s)
+		. Workflow: "LLMs and tools are orchestrated through predefined code paths"; state machine
+		. Agent: LLM(s) dynamically directing their own processes and tool usage, maintaining control over how they accomplish tasks
 
 Orchestrator:
 	. or "Assistant"
+	. responsible for system prompt
 	. safety checks
 	. extra instructions
 		-> "system prompt" + "full chat history" + ... + "USER PROMPT"
@@ -54,10 +58,19 @@ You are an AI academic expert. What are the various types of AI models? For exam
     TERMINOLOGY
 -----------------------------------------------------------
 
+- Context_Window: 
+
+- RAG: Retrieval Augmented Generation ! very powerful !
+	. providing additional files/data as context to augment a model's response to your prompt
+	. ex. embedding, vector databases
+
+
 Prompt Engineering:
 	. techniques for creating quality prompts
+	. system_prompt: 
 
 - LLM: Large Language Model
+- SLM: Small Language Model
 - RLM: Large Reasoning Model
 	. type of *LLM*
 
@@ -67,6 +80,11 @@ Prompt Engineering:
 
 - MCP: (protocol) Model Context Protocol
 	. standardizes "tool calling" between clients: MCP Client -> MCP Server -> Tool
+
+- Model_Router: maps #Prompt_Dimensions# to #Model_Dimensions# to select 
+	 i. Model_Dimensions: cost ($/token), speed, accuracy, type (LLM, SLM, RLM)
+	ii. Prompt_Dimensions: complexity, amount of data, tooling dependency
+	. ex. Opencode Zen, Microsoft Foundry
 
 - Agentic_AI: act autonomously to complete jobs, not just one response but can go through a number of stages
 
