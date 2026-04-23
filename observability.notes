@@ -1,0 +1,17 @@
+
+-----------------------------------------------------------
+    TIPS
+-----------------------------------------------------------
+
+- url: https://www.ibm.com/think/topics/ai-observability
+
+
+-----------------------------------------------------------
+    NOTES
+-----------------------------------------------------------
+
+# Three Pillars
+	1. Logs: granular, time-stamped, complete, immutable records
+	2. Traces: end-to-end "journey" of a user request
+	3. Metrics: fundamental measures of application and system health over time
+	
