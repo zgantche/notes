@@ -1,0 +1,38 @@
+
+-----------------------------------------------------------
+    TIPS
+-----------------------------------------------------------
+
+- url: https://learn.microsoft.com/en-us/training/modules/fundamentals-machine-learning
+
+
+
+-----------------------------------------------------------
+    NOTES
+-----------------------------------------------------------
+
+- Machine_Learning: intersection of *data science* (mathematics & statistics) and *software engineering*
+	. uses data from past observations to predict unknown outcomes
+
+- Machine_Learning_Model: encapsolated function, "f(x)", which calculates an output given an input
+	. training defines this function
+	. after function is defined, it can be used to *inference*, predict, new values
+
+Machine Learning Training:
+	# Supervised: (data annotation)
+		. Regression: 
+		. Classification: 
+			-> Binary: 
+			-> Multiclass: 
+		. Diffusion: (non-human annotators)
+	# Unsupervised
+		. Clustering: 
+
+- GPUs: excel at vector and matrix manipulation, which neural network training rely on
+
+- Deep_Learning: advanced form of *Machine Learning* inspired by the way the human brain learns; it simulates electrochemical activity in biological neurons via mathematical functions
+	. consists of layers of "neurons" resulting in a deeply nested function, hence *Deep Learning*
+	. can be used for different kinds of *Machine Learning* problems
+		- ex. regression, classification, models for computer vision, etc.
+
+
